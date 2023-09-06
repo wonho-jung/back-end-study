@@ -1,8 +1,20 @@
 const http = require("http");
 const fs = require("fs");
+const _ = require("lodash");
 
 const server = http.createServer((req, res) => {
   // console.log(req.url, req.method);
+
+  //lodash
+  const num = _.random(0, 20);
+  // function call only once
+  const once = _.once(() => {
+    console.log("call once");
+  });
+  once();
+  //Second time call doesn't work
+  once();
+
   res.setHeader("Content-Type", "text/html");
   let path = "./views/";
 
