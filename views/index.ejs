@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="/style.css" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ejs</title>
   </head>
   <body>
+    <% const name ="sam" %>
+
     <nav>
+      <h1><%= name %></h1>
+      <!-- this value from get / api -->
+      <p><%= title%></p>
       <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/about">About</a></li>
       </ul>
     </nav>
-    Home
+    <!-- if in the HTML -->
+    <% if (title === "About") { %>
+    <section>
+      <h1>Home</h1>
+      <p>Home page</p>
+    </section>
+    <% } %> Home
   </body>
 </html>
