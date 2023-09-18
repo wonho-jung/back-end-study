@@ -25,5 +25,18 @@
       <p>Home page</p>
     </section>
     <% } %> Home
+
+    <h1>Blog Title</h1>
+    <p>Blog Body</p>
+    <% if (blogs.length > 0) { %> <% blogs.forEach((blog) => { %>
+    <div class="blog">
+      <a href="/blogs/<%= blog.id %>">
+        <h2><%= blog.title %></h2>
+        <p><%= blog.snippet %></p>
+      </a>
+    </div>
+    <% }) %> <% } else { %>
+    <p>No blogs to display</p>
+    <% } %>
   </body>
 </html>

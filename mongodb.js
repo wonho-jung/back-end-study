@@ -25,7 +25,9 @@ mongoose
 //register view engine
 app.set("view engine", "ejs");
 
+//middleware & static files
 app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(morgan("dev"));
 
@@ -40,7 +42,6 @@ app.get("/add-blog", (req, res) => {
   blog
     .save()
     .then((result) => {
-      console.log("success", result);
       res.send(result);
     })
     .catch((err) => console.log("err", err));
@@ -65,18 +66,60 @@ app.get("/single-blog", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("index", {
-    title: "Home",
-  });
+  res.redirect("/blogs");
 });
-
+app.get("/blogs", (req, res) => {
+  Blog.find()
+    .then((result) => {
+      res.render("index", {
+        title: "All Blogs",
+        blogs: result,
+      });
+    })
+    .catch((err) => console.log("err", err));
+});
+app.get("/create", (req, res) => {
+  res.render("create");
+});
 app.get("/about", (req, res) => {
   res.render("about");
 });
 app.get("/about-me", (req, res) => {
   res.redirect("/about");
 });
+app.get("/blogs/:blogId", (req, res) => {
+  const id = req.params.blogId;
+  Blog.findById(id)
+    .then((result) => {
+      res.render("details", { blog: result, title: "Blog Details" });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 // // 404 page
 // app.use((req, res) => {
 //   res.status(404).render("404");
 // });
+
+//POST
+app.post("/blogs", (req, res) => {
+  const blog = new Blog(req.body);
+
+  blog
+    .save()
+    .then((result) => {
+      res.redirect("/blogs");
+    })
+    .catch((err) => console.log("err", err));
+});
+
+//DELETE
+app.delete("/blogs/:id", (req, res) => {
+  const id = req.params.id;
+  Blog.findByIdAndDelete(id)
+    .then((result) => {
+      res.json({ redirect: "/blogs" });
+    })
+    .catch((err) => console.log("err", err));
+});
